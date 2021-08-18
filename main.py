@@ -67,7 +67,7 @@ async def dc(ctx):
         await ctx.send("I am not in a voice channel :()")
 
 @client.command()
-async def yt(ctx, arg):
+async def yt(ctx, *args):
     voice = ctx.author.voice
     voice_bot = discord.utils.get(client.voice_clients, guild=ctx.guild)
     if voice:
@@ -76,10 +76,13 @@ async def yt(ctx, arg):
             await channel.connect()
         voice_bot = discord.utils.get(client.voice_clients, guild=ctx.guild)
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True', 'defaultsearch':'ytsearch'}
-        if valid_url(arg):
+        if len(args) == 1 and valid_url(args[0]):
             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-                info = ydl.extract_info(arg, download=False)
+                info = ydl.extract_info(args[0], download=False)
         else:
+            arg = ""
+            for s in args:
+                arg += s + " "
             url_suff = youtube_search.YoutubeSearch(arg, max_results=1).to_dict()[0]['url_suffix']
             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
                 info = ydl.extract_info('youtube.com' + str(url_suff), download=False)
