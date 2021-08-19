@@ -10,6 +10,8 @@ from discord.ext import commands
 
 
 client = commands.Bot(command_prefix = '*')
+client.remove_command('help')
+client.activity = discord.Activity(type=discord.ActivityType.listening, name="*help")
 playlist = queue.Queue()
 naruto_trap = 'https://www.youtube.com/watch?v=WmsNDyzfYkw'
 
@@ -36,6 +38,18 @@ def next_in_queue(e, ctx):
 @client.event
 async def on_ready():
     print("Ready :()()()")
+
+
+@client.command()
+async def help(ctx):
+    embed = discord.Embed(title='Commands :()()()()()', colour=discord.Colour.blue())
+    embed.add_field(name='*yt', value='Plays the given youtube video. You can pass a youtube URL or multiple search phrases and the most matching video will be played.')
+    embed.add_field(name='*play', value='Plays the given mp3 sound file. You just need to pass the file name.')
+    embed.add_field(name='*skip', value='Stops the current video/sound file and continues with the successor in the queue if there is one.')
+    embed.add_field(name='*stop', value='Stops the current video/sound file and deletes the queue content.')
+    embed.add_field(name='*dc', value='Disconnects the bot :(')
+    await ctx.send(embed=embed)
+
 
 @client.command()
 async def play(ctx, soundfile):
@@ -85,7 +99,7 @@ async def yt(ctx, *args):
                 arg += s + " "
             url_suff = youtube_search.YoutubeSearch(arg, max_results=1).to_dict()[0]['url_suffix']
             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-                info = ydl.extract_info('youtube.com' + str(url_suff), download=False)
+                info = ydl.extract_info('https://www.youtube.com' + str(url_suff), download=False)
         url = info['formats'][0]['url']
         if not voice_bot.is_playing():
             voice_bot.play(discord.FFmpegPCMAudio(url), after=lambda e: next_in_queue(e, ctx))
