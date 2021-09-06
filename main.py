@@ -49,6 +49,8 @@ async def help(ctx):
     embed.add_field(name='*play', value='Plays the given mp3 sound file. You just need to pass the file name.')
     embed.add_field(name='*skip', value='Stops the current video/sound file and continues with the successor in the queue if there is one.')
     embed.add_field(name='*stop', value='Stops the current video/sound file and deletes the queue content.')
+    embed.add_field(name='*pause', value='Pauses the current video/sound file.')
+    embed.add_field(name='*resume', value='Resumes the paused video/sound file.')
     embed.add_field(name='*dc', value='Disconnects the bot :(')
     await ctx.send(embed=embed)
 
