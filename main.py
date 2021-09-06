@@ -15,8 +15,9 @@ client.activity = discord.Activity(type=discord.ActivityType.listening, name="*h
 playlist = queue.Queue()
 naruto_trap = 'https://www.youtube.com/watch?v=WmsNDyzfYkw'
 
-
+#======================================================================================================
 # Helper functions
+#======================================================================================================
 
 
 def valid_url(url):
@@ -31,8 +32,9 @@ def next_in_queue(e, ctx):
     if not playlist.empty():
         voice_bot.play(discord.FFmpegPCMAudio(playlist.get()), after=lambda e: next_in_queue(e, ctx))
 
-
+#======================================================================================================
 # Bot Functionality
+#======================================================================================================
 
 
 @client.event
@@ -136,18 +138,42 @@ async def stop(ctx):
     else:
         await ctx.send("I am not in a voice channel :()")
 
+@client.command()
+async def pause(ctx):
+    voice_bot = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    if voice_bot:
+        if voice_bot.is_playing():
+            voice_bot.pause()
+            await ctx.send("Paused current track :()")
+        else:
+            await ctx.send("I am not playing anything :()")
+    else:
+        await ctx.send("I am not in a voice channel :()")
 
+@client.command()
+async def resume(ctx):
+    voice_bot = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    if voice_bot:
+        if not voice_bot.is_playing():
+            voice_bot.resume()
+            await ctx.send("Resumed current track :()")
+        else:
+            await ctx.send("I am already playing something at the moment :()")
+    else:
+        await ctx.send("I am not in a voice channel :()")
+
+#======================================================================================================
 # Debugging command
-
+#======================================================================================================
 
 @client.command()
 async def test(ctx, link):
     print("debugging message: test was called :()")
     await ctx.send("Only used for debugging purposes :()")
    
-
+#======================================================================================================
 # Run Bot
-
+#======================================================================================================
 
 token = ""
 with open("bot_token.txt", 'r') as file:
