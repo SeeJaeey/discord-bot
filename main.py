@@ -1,9 +1,11 @@
+from discord.ext import commands
 import discord
-import time
 import youtube_dl
 import youtube_search
 import queue
-from discord.ext import commands
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 # Fields
