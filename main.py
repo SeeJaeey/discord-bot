@@ -115,7 +115,7 @@ async def yt(ctx, *args):
             voice_bot.play(discord.FFmpegPCMAudio(url), after=lambda e: next_in_queue(e, ctx))
         else:
             playlist.put(url)
-            await ctx.send("Queued @" + str(ctx.author) + ", size of Queue: " + str(playlist.qsize()) + " :()")
+            await ctx.send("Queued @" + str(ctx.author) + ", size of Queue: :(" + ")" * playlist.qsize())
     else:
         await ctx.send("You must be in a voice channel to run this command :()")
 
@@ -127,7 +127,7 @@ async def skip(ctx):
             voice_bot.stop()
             if not playlist.empty():
                 voice_bot.play(discord.FFmpegPCMAudio(playlist.get()), after=lambda e: next_in_queue(e, ctx))
-                await ctx.send("Playing next url, new size of Queue: " + str(playlist.qsize()) + " :()")
+                await ctx.send("Playing next url, new size of Queue: :(" + ")" * playlist.qsize())
         else:
             await ctx.send("I am not playing anything :()")
     else:
