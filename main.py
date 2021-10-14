@@ -74,7 +74,7 @@ async def play(ctx, soundfile):
             voice_bot.play(discord.FFmpegPCMAudio("sound_files/" + soundfile + ".mp3"), after=lambda e: next_in_queue(e, ctx))
         else:
             playlist.put("sound_files/" + soundfile + ".mp3")
-            await ctx.send("Queued @" + str(ctx.author) + ", size of Queue: " + str(playlist.qsize()) + " :()")
+            await ctx.send("Queued @" + str(ctx.author) + ", size of Queue: :(" + ")" * playlist.qsize())
 
     else:
         await ctx.send("You must be in a voice channel to run this command :()")
