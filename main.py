@@ -139,7 +139,8 @@ async def stop(ctx):
     if voice_bot:
         if voice_bot.is_playing():
             voice_bot.stop()
-            playlist.empty()
+            while not playlist.empty():
+                playlist.get_nowait()
             await ctx.send("Stopped and removed queued urls :()")
         else:
             await ctx.send("I am not playing anything :()")
